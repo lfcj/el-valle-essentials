@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
+<title>El Valle — Community Directory</title>
+<meta name="description" content="Essential services and contacts for the El Valle Golf Resort community">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════════════
+   TOKENS
+   ══════════════════════════════════════════════════════════════════ */
+:root {
+  --green: #1B6B4A;
+  --green-dark: #14523A;
+  --green-light: #E8F5EE;
+  --cream: #FDF8F0;
+  --warm-white: #FFFDF9;
+  --sand: #F5EFE6;
+  --terracotta: #C75B39;
+  --terra-light: #FDF0EB;
+  --gold: #B8860B;
+  --text: #2C2416;
+  --text-mid: #5C5245;
+  --text-light: #8A7F72;
+  --border: #E8E0D4;
+  --red: #C41E3A;
+  --red-bg: #FDF2F4;
+  --white: #fff;
+  --radius: 14px;
+  --shadow: 0 2px 12px rgba(44,36,22,.08);
+  --shadow-lg: 0 4px 24px rgba(44,36,22,.12);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   RESET
+   ══════════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:'Source Sans 3','Segoe UI',system-ui,sans-serif;
+  background:var(--cream);color:var(--text);
+  font-size:18px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+h1,h2,h3{font-family:'Lora','Georgia',serif}
+.inner{max-width:920px;margin:0 auto;padding:0 20px}
+
+/* ══════════════════════════════════════════════════════════════════
+   LANGUAGE BAR
+   ══════════════════════════════════════════════════════════════════ */
+.lang-bar{
+  background:var(--green-dark);padding:8px 0;
+  display:flex;justify-content:flex-end;
+}
+.lang-bar .inner{display:flex;justify-content:flex-end;gap:6px;width:100%}
+.lang-btn{
+  background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.25);
+  border-radius:8px;padding:8px 20px;font-size:17px;font-weight:500;
+  color:#fff;display:inline-flex;align-items:center;gap:6px;
+  transition:all .15s;
+}
+.lang-btn:hover{background:rgba(255,255,255,.22)}
+.lang-btn.active{
+  background:rgba(255,255,255,.95);color:var(--green-dark);
+  font-weight:700;border-color:#fff;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   HEADER
+   ══════════════════════════════════════════════════════════════════ */
+.site-header{
+  background:linear-gradient(135deg,var(--green) 0%,var(--green-dark) 100%);
+  color:#fff;padding:36px 0 32px;
+}
+.logo-row{display:flex;align-items:center;gap:16px;margin-bottom:10px}
+.logo-icon{font-size:48px;line-height:1}
+.site-title{font-size:clamp(32px,5vw,42px);font-weight:700;letter-spacing:-.5px}
+.site-subtitle{font-size:18px;opacity:.85;font-weight:400;margin-top:2px}
+.site-tagline{font-size:17px;opacity:.7;max-width:520px;margin-top:4px}
+
+/* ══════════════════════════════════════════════════════════════════
+   EMERGENCY
+   ══════════════════════════════════════════════════════════════════ */
+.emergency{
+  background:var(--red-bg);border-bottom:3px solid var(--red);
+  padding:20px 0;
+}
+.emerg-top{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.emerg-icon{font-size:36px;line-height:1}
+.emerg-title{font-size:22px;font-weight:700;color:var(--red);font-family:'Lora',serif}
+.emerg-note{font-size:16px;margin-top:2px}
+.emerg-btn{
+  display:inline-block;background:var(--red);color:#fff;
+  font-size:22px;font-weight:700;padding:14px 44px;
+  border-radius:12px;letter-spacing:1px;margin-bottom:12px;
+  transition:transform .1s;
+}
+.emerg-btn:active{transform:scale(.97)}
+.walkin{font-size:15px;color:var(--text-mid)}
+.walkin strong{color:var(--text)}
+
+/* ══════════════════════════════════════════════════════════════════
+   SEARCH (STICKY)
+   ══════════════════════════════════════════════════════════════════ */
+.search-wrap{
+  position:sticky;top:0;z-index:100;
+  background:var(--warm-white);border-bottom:1px solid var(--border);
+  padding:14px 0;box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.search-box{
+  display:flex;align-items:center;gap:12px;
+  background:var(--white);border:2px solid var(--border);
+  border-radius:var(--radius);padding:4px 16px;
+  transition:border-color .2s;
+}
+.search-box:focus-within{border-color:var(--green)}
+.search-box .icon{font-size:24px;flex-shrink:0}
+.search-input{
+  flex:1;border:none;outline:none;font-size:20px;
+  padding:14px 0;background:transparent;font-family:inherit;color:var(--text);
+}
+.search-input::placeholder{color:var(--text-light)}
+.clear-btn{
+  background:var(--sand);border:none;border-radius:8px;
+  padding:8px 14px;font-size:18px;color:var(--text-mid);font-weight:600;
+}
+.result-count{font-size:15px;color:var(--text-light);margin-top:10px}
+
+/* ══════════════════════════════════════════════════════════════════
+   PILLS
+   ══════════════════════════════════════════════════════════════════ */
+.pills-wrap{
+  background:var(--warm-white);border-bottom:1px solid var(--border);
+  padding:14px 0;
+}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:10px 18px;font-size:16px;font-weight:500;
+  border:1.5px solid var(--border);border-radius:50px;
+  background:var(--white);color:var(--text);
+  white-space:nowrap;transition:all .15s;
+}
+.pill:hover{border-color:var(--green);background:var(--green-light)}
+.pill.active{background:var(--green);color:#fff;border-color:var(--green)}
+
+/* ══════════════════════════════════════════════════════════════════
+   RESORT CONTACTS
+   ══════════════════════════════════════════════════════════════════ */
+.resort-section{padding:28px 0 8px}
+.section-title{
+  font-size:24px;font-weight:700;margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;
+}
+.resort-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;
+}
+.resort-card{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow);
+}
+.resort-label{font-size:16px;font-weight:700;color:var(--green);margin-bottom:6px}
+.resort-phone{
+  display:block;font-size:19px;font-weight:600;color:var(--terracotta);
+  margin-bottom:4px;
+}
+.resort-phone2{display:block;font-size:17px;color:var(--terracotta);margin-bottom:4px}
+.resort-email{font-size:14px;color:var(--text-light);word-break:break-all}
+
+/* ══════════════════════════════════════════════════════════════════
+   DIRECTORY
+   ══════════════════════════════════════════════════════════════════ */
+.directory{padding:24px 0 40px}
+.cat-block{margin-bottom:32px}
+.cat-title{
+  font-size:26px;font-weight:700;color:var(--green);
+  display:flex;align-items:center;gap:12px;
+  border-bottom:2px solid var(--green-light);padding-bottom:10px;margin-bottom:14px;
+}
+.cat-icon{font-size:28px}
+.entry-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   CARD
+   ══════════════════════════════════════════════════════════════════ */
+.card{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:16px;padding:20px 22px;box-shadow:var(--shadow);
+  transition:box-shadow .2s;
+}
+.card:hover{box-shadow:var(--shadow-lg)}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.card-name{font-size:20px;font-weight:700;line-height:1.3}
+.card-area{
+  font-size:14px;background:var(--sand);color:var(--text-mid);
+  padding:3px 10px;border-radius:20px;white-space:nowrap;font-weight:500;
+  flex-shrink:0;
+}
+.card-note{font-size:16px;color:var(--text-mid);margin:4px 0 8px}
+.card-review{font-size:15px;color:var(--gold);font-style:italic;margin:4px 0 10px;line-height:1.4}
+.card-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+
+.btn-phone,.btn-phone2,.btn-email,.btn-web{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:10px 16px;border-radius:10px;font-weight:600;
+  font-size:17px;white-space:nowrap;transition:filter .15s;
+}
+.btn-phone:active,.btn-web:active,.btn-email:active{filter:brightness(.92)}
+.btn-phone,.btn-phone2{background:var(--green-light);color:var(--green)}
+.btn-phone2{font-size:16px;font-weight:500}
+.btn-email{background:var(--sand);color:var(--text-mid);font-size:15px;font-weight:500;word-break:break-all}
+.btn-web{background:var(--terra-light);color:var(--terracotta);font-size:15px}
+
+/* ══════════════════════════════════════════════════════════════════
+   NO RESULTS / LOADING
+   ══════════════════════════════════════════════════════════════════ */
+.no-results,.loading-state{text-align:center;padding:60px 20px}
+.no-results-emoji,.loading-emoji{font-size:48px;margin-bottom:12px}
+.no-results-text{font-size:22px;font-weight:600;margin-bottom:8px}
+.no-results-hint,.loading-text{font-size:17px;color:var(--text-light)}
+.loading-text{font-size:20px;color:var(--text-mid)}
+
+mark{background:#FDE68A;border-radius:3px;padding:0 2px}
+
+/* ══════════════════════════════════════════════════════════════════
+   FOOTER
+   ══════════════════════════════════════════════════════════════════ */
+.site-footer{
+  background:var(--sand);border-top:1px solid var(--border);
+  padding:32px 0;text-align:center;
+}
+.footer-note{font-size:15px;color:var(--text-mid);font-style:italic;margin-bottom:8px}
+.footer-disclaimer{font-size:15px;color:var(--text-mid);margin-bottom:16px}
+.footer-copy{font-size:14px;color:var(--text-light)}
+
+/* ══════════════════════════════════════════════════════════════════
+   BACK TO TOP
+   ══════════════════════════════════════════════════════════════════ */
+.back-to-top{
+  position:fixed;bottom:28px;right:28px;
+  background:var(--green);color:#fff;border:none;
+  border-radius:var(--radius);padding:14px 22px;
+  font-size:18px;font-weight:700;font-family:inherit;
+  box-shadow:var(--shadow-lg);z-index:200;
+  opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.back-to-top.visible{opacity:1;pointer-events:auto}
+.back-to-top:active{transform:scale(.95)}
+
+/* ══════════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════════════════════════ */
+@media(max-width:480px){
+  .entry-grid{grid-template-columns:1fr}
+  .resort-grid{grid-template-columns:1fr}
+  .btn-phone,.btn-phone2{width:100%;justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ LANGUAGE BAR ═══════════ -->
+<div class="lang-bar">
+  <div class="inner">
+    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">🇬🇧 English</button>
+    <button class="lang-btn" data-lang="es" onclick="setLang('es')">🇪🇸 Español</button>
+  </div>
+</div>
+
+<!-- ═══════════ HEADER ═══════════ -->
+<header class="site-header">
+  <div class="inner">
+    <div class="logo-row">
+      <span class="logo-icon">⛳</span>
+      <div>
+        <h1 class="site-title">El Valle</h1>
+        <p class="site-subtitle" data-i18n="subtitle">Community Directory</p>
+      </div>
+    </div>
+    <p class="site-tagline" data-i18n="tagline">Your essential guide to services and contacts at El Valle Golf Resort</p>
+  </div>
+</header>
+
+<!-- ═══════════ EMERGENCY ═══════════ -->
+<div class="emergency">
+  <div class="inner">
+    <div class="emerg-top">
+      <span class="emerg-icon">🆘</span>
+      <div>
+        <p class="emerg-title" data-i18n="emergency">Emergency Services</p>
+        <p class="emerg-note" data-i18n="emergNote">Police, Fire & Ambulance — operators speak English</p>
+      </div>
+    </div>
+    <a href="tel:112" class="emerg-btn" data-i18n="call112">Call 112</a>
+    <p class="walkin"><strong data-i18n="walkIn">Walk-in clinic:</strong> Centro De Salud Campo De Cartagena / Covera</p>
+  </div>
+</div>
+
+<!-- ═══════════ SEARCH ═══════════ -->
+<div class="search-wrap">
+  <div class="inner">
+    <div class="search-box">
+      <span class="icon">🔍</span>
+      <input class="search-input" type="text" id="searchInput" data-i18n-placeholder="searchPlaceholder">
+      <button class="clear-btn" id="clearBtn" style="display:none" aria-label="Clear">✕</button>
+    </div>
+    <p class="result-count" id="resultCount" style="display:none"></p>
+  </div>
+</div>
+
+<!-- ═══════════ PILLS ═══════════ -->
+<div class="pills-wrap" id="pillsWrap">
+  <div class="inner">
+    <div class="pills" id="pillsContainer"></div>
+  </div>
+</div>
+
+<!-- ═══════════ RESORT CONTACTS ═══════════ -->
+<div class="resort-section" id="resortSection">
+  <div class="inner">
+    <h2 class="section-title"><span>📞</span> <span data-i18n="resortContacts">Resort Contacts</span></h2>
+    <div class="resort-grid" id="resortGrid"></div>
+  </div>
+</div>
+
+<!-- ═══════════ DIRECTORY ═══════════ -->
+<div class="directory">
+  <div class="inner" id="directoryContainer">
+    <div class="loading-state" id="loadingState">
+      <p class="loading-emoji">📡</p>
+      <p class="loading-text">Loading directory…</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer class="site-footer">
+  <div class="inner" style="max-width:700px">
+    <p class="footer-note" data-i18n="footer1">Listings are personal recommendations from the community. They are not vetted, checked, or endorsed by the administration.</p>
+    <p class="footer-disclaimer" data-i18n="footer2">To suggest a new listing or update, please contact the page maintainer.</p>
+    <p class="footer-copy">© El Valle Golf Resort Community</p>
+  </div>
+</footer>
+
+<!-- ═══════════ BACK TO TOP ═══════════ -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <span data-i18n="backToTop">↑ Top</span>
+</button>
+
+
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   CONFIGURATION — CHANGE THIS URL
+   ══════════════════════════════════════════════════════════════════
+   
+   HOW TO GET YOUR URL:
+   1. Open your Google Sheet
+   2. File → Share → Publish to web
+   3. Choose the sheet name from the dropdown, and "CSV" as format
+   4. Click Publish, copy the URL
+   5. Paste it below replacing the placeholder
+   
+   You need THREE URLs — one per sheet tab:
+   - categories
+   - entries
+   - resort_contacts
+   
+   Each published CSV URL looks like:
+   https://docs.google.com/spreadsheets/d/e/XXXX/pub?gid=YYYY&single=true&output=csv
+   
+   ══════════════════════════════════════════════════════════════════ */
+
+const SHEET_URLS = {
+  // ⬇️ REPLACE these with your published Google Sheet CSV URLs
+  categories:     'https://docs.google.com/spreadsheets/d/e/2PACX-1vQsNpuJjo89w7YWFl_pq0il-FkIwZVSpn4AOD06he5RUq5FVnz16huuAaJsou3yp9hPz48Wh8OzY_dS/pub?gid=247798169&single=true&output=csv',
+  entries:         'https://docs.google.com/spreadsheets/d/e/2PACX-1vQsNpuJjo89w7YWFl_pq0il-FkIwZVSpn4AOD06he5RUq5FVnz16huuAaJsou3yp9hPz48Wh8OzY_dS/pub?gid=184089789&single=true&output=csv',
+  resort_contacts: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQsNpuJjo89w7YWFl_pq0il-FkIwZVSpn4AOD06he5RUq5FVnz16huuAaJsou3yp9hPz48Wh8OzY_dS/pub?gid=2131291713&single=true&output=csv',
+};
+
+/* ══════════════════════════════════════════════════════════════════
+   i18n STRINGS
+   ══════════════════════════════════════════════════════════════════ */
+const I18N = {
+  en: {
+    subtitle: 'Community Directory',
+    tagline: 'Your essential guide to services and contacts at El Valle Golf Resort',
+    emergency: 'Emergency Services',
+    emergNote: 'Police, Fire & Ambulance — operators speak English',
+    call112: 'Call 112',
+    walkIn: 'Walk-in clinic:',
+    searchPlaceholder: 'Search — e.g. "plumber", "dentist", "taxi"…',
+    resortContacts: 'Resort Contacts',
+    all: 'All',
+    noResultsFor: 'No results found for',
+    noHint: 'Try a different keyword like "plumber", "doctor", or "taxi"',
+    results: 'results', result: 'result',
+    categories: 'categories', category: 'category', in_: 'in',
+    website: 'Website',
+    footer1: 'Listings are personal recommendations from the community. They are not vetted, checked, or endorsed by the administration.',
+    footer2: 'To suggest a new listing or update, please contact the page maintainer.',
+    backToTop: '↑ Top',
+    loading: 'Loading directory…',
+    errorTitle: 'Could not load directory',
+    errorHint: 'Please check your internet connection and try again.',
+  },
+  es: {
+    subtitle: 'Directorio Comunitario',
+    tagline: 'Tu guía esencial de servicios y contactos en El Valle Golf Resort',
+    emergency: 'Servicios de Emergencia',
+    emergNote: 'Policía, Bomberos y Ambulancia — los operadores hablan inglés',
+    call112: 'Llamar 112',
+    walkIn: 'Centro de urgencias:',
+    searchPlaceholder: 'Buscar — ej. "fontanero", "dentista", "taxi"…',
+    resortContacts: 'Contactos del Resort',
+    all: 'Todos',
+    noResultsFor: 'Sin resultados para',
+    noHint: 'Prueba otra palabra como "fontanero", "médico" o "taxi"',
+    results: 'resultados', result: 'resultado',
+    categories: 'categorías', category: 'categoría', in_: 'en',
+    website: 'Web',
+    footer1: 'Los listados son recomendaciones personales de la comunidad. No están verificados ni respaldados por la administración.',
+    footer2: 'Para sugerir un nuevo listado o actualización, contacte con el administrador de la página.',
+    backToTop: '↑ Arriba',
+    loading: 'Cargando directorio…',
+    errorTitle: 'No se pudo cargar el directorio',
+    errorHint: 'Comprueba tu conexión a internet e inténtalo de nuevo.',
+  }
+};
+
+/* ══════════════════════════════════════════════════════════════════
+   STATE
+   ══════════════════════════════════════════════════════════════════ */
+let lang = 'en';
+let activeCat = null;
+let searchQuery = '';
+let DATA = { categories: [], entries: [], resort: [] };
+
+/* ══════════════════════════════════════════════════════════════════
+   CSV PARSER (no dependencies)
+   ══════════════════════════════════════════════════════════════════ */
+function parseCSV(text) {
+  const lines = [];
+  let current = '';
+  let inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (ch === '"') {
+      if (inQuotes && text[i+1] === '"') { current += '"'; i++; }
+      else { inQuotes = !inQuotes; }
+    } else if (ch === ',' && !inQuotes) {
+      lines.push(current); current = '';
+    } else if ((ch === '\n' || ch === '\r') && !inQuotes) {
+      if (ch === '\r' && text[i+1] === '\n') i++;
+      lines.push(current); current = '##NEWROW##';
+    } else {
+      current += ch;
+    }
+  }
+  lines.push(current);
+  
+  const rows = [[]];
+  for (const cell of lines) {
+    if (cell === '##NEWROW##') { rows.push([]); }
+    else if (cell.startsWith('##NEWROW##')) { rows.push([cell.slice(10)]); }
+    else { rows[rows.length-1].push(cell); }
+  }
+  
+  const headers = rows[0].map(h => h.trim());
+  return rows.slice(1).filter(r => r.some(c => c.trim())).map(row => {
+    const obj = {};
+    headers.forEach((h, i) => { obj[h] = (row[i] || '').trim(); });
+    return obj;
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   FALLBACK DATA (used when Google Sheets URLs aren't configured)
+   ══════════════════════════════════════════════════════════════════ */
+function useFallbackData() {
+  // This is populated from the Excel template — same data
+  DATA.categories = FALLBACK_CATEGORIES;
+  DATA.entries = FALLBACK_ENTRIES;
+  DATA.resort = FALLBACK_RESORT;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   FETCH DATA
+   ══════════════════════════════════════════════════════════════════ */
+async function fetchData() {
+  if (SHEET_URLS.categories.startsWith('PASTE_')) {
+    // No Google Sheet configured — use built-in fallback data
+    useFallbackData();
+    render();
+    return;
+  }
+  
+  try {
+    const [catRes, entRes, resortRes] = await Promise.all([
+      fetch(SHEET_URLS.categories).then(r => r.text()),
+      fetch(SHEET_URLS.entries).then(r => r.text()),
+      fetch(SHEET_URLS.resort_contacts).then(r => r.text()),
+    ]);
+    DATA.categories = parseCSV(catRes);
+    DATA.entries = parseCSV(entRes);
+    DATA.resort = parseCSV(resortRes);
+    render();
+  } catch(e) {
+    console.error('Fetch error, using fallback:', e);
+    useFallbackData();
+    render();
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   HELPERS
+   ══════════════════════════════════════════════════════════════════ */
+const t = (key) => I18N[lang][key] || I18N.en[key] || key;
+const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+const loc = (obj, field) => obj[field+'_'+lang] || obj[field+'_en'] || obj[field] || '';
+
+function hl(text, q) {
+  if (!q || !text) return esc(text || '');
+  const nt = norm(text), nq = norm(q);
+  const i = nt.indexOf(nq);
+  if (i === -1) return esc(text);
+  return esc(text.slice(0,i)) + '<mark>' + esc(text.slice(i, i+q.length)) + '</mark>' + esc(text.slice(i+q.length));
+}
+
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function phoneHref(p) { return 'tel:' + p.replace(/\s/g, ''); }
+function webHref(w) { return w.startsWith('http') ? w : 'https://' + w; }
+
+/* ══════════════════════════════════════════════════════════════════
+   i18n UPDATE
+   ══════════════════════════════════════════════════════════════════ */
+function updateI18n() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (I18N[lang][key]) el.textContent = I18N[lang][key];
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (I18N[lang][key]) el.placeholder = I18N[lang][key];
+  });
+  document.documentElement.lang = lang;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   RENDER
+   ══════════════════════════════════════════════════════════════════ */
+function render() {
+  updateI18n();
+  renderPills();
+  renderResort();
+  renderDirectory();
+}
+
+function renderPills() {
+  const c = document.getElementById('pillsContainer');
+  let html = `<button class="pill ${activeCat===null?'active':''}" onclick="setCat(null)">${t('all')}</button>`;
+  DATA.categories.forEach(cat => {
+    const name = loc(cat, 'name');
+    const active = activeCat === cat.category_id ? 'active' : '';
+    html += `<button class="pill ${active}" onclick="setCat('${esc(cat.category_id)}')">${cat.icon || ''} ${esc(name)}</button>`;
+  });
+  c.innerHTML = html;
+}
+
+function renderResort() {
+  const g = document.getElementById('resortGrid');
+  let html = '';
+  DATA.resort.forEach(r => {
+    const label = loc(r, 'label');
+    html += `<div class="resort-card">
+      <p class="resort-label">${esc(label)}</p>
+      ${r.phone ? `<a href="${phoneHref(r.phone)}" class="resort-phone">${esc(r.phone)}</a>` : ''}
+      ${r.phone2 ? `<a href="${phoneHref(r.phone2)}" class="resort-phone2">${esc(r.phone2)}</a>` : ''}
+      ${r.email ? `<p class="resort-email">${esc(r.email)}</p>` : ''}
+    </div>`;
+  });
+  g.innerHTML = html;
+}
+
+function renderDirectory() {
+  const container = document.getElementById('directoryContainer');
+  const q = searchQuery.trim();
+  const nq = norm(q);
+  
+  // Show/hide resort & pills based on search
+  document.getElementById('resortSection').style.display = (!q && !activeCat) ? '' : 'none';
+  document.getElementById('pillsWrap').style.display = q ? 'none' : '';
+  
+  // Build category→entries map
+  const catMap = {};
+  DATA.categories.forEach(c => { catMap[c.category_id] = { ...c, entries: [] }; });
+  DATA.entries.forEach(e => {
+    if (catMap[e.category_id]) catMap[e.category_id].entries.push(e);
+  });
+  
+  let cats = Object.values(catMap).filter(c => c.entries.length > 0);
+  
+  // Filter by active category
+  if (activeCat) cats = cats.filter(c => c.category_id === activeCat);
+  
+  // Filter by search
+  if (nq) {
+    cats = cats.map(cat => {
+      const catName = loc(cat, 'name');
+      if (norm(catName).includes(nq)) return cat;
+      const matched = cat.entries.filter(e =>
+        [e.name, loc(e,'note'), e.area, e.phone, loc(e,'review')].some(v => v && norm(v).includes(nq))
+      );
+      return matched.length ? { ...cat, entries: matched } : null;
+    }).filter(Boolean);
+  }
+  
+  const total = cats.reduce((n, c) => n + c.entries.length, 0);
+  
+  // Result count
+  const rc = document.getElementById('resultCount');
+  if (q) {
+    rc.style.display = '';
+    rc.textContent = `${total} ${total!==1?t('results'):t('result')} ${t('in_')} ${cats.length} ${cats.length!==1?t('categories'):t('category')}`;
+  } else {
+    rc.style.display = 'none';
+  }
+  
+  // No results
+  if (cats.length === 0) {
+    container.innerHTML = `<div class="no-results">
+      <p class="no-results-emoji">🤔</p>
+      <p class="no-results-text">${t('noResultsFor')} "${esc(q)}"</p>
+      <p class="no-results-hint">${t('noHint')}</p>
+    </div>`;
+    return;
+  }
+  
+  let html = '';
+  cats.forEach(cat => {
+    const catName = loc(cat, 'name');
+    html += `<div class="cat-block">
+      <h2 class="cat-title"><span class="cat-icon">${cat.icon||''}</span> ${hl(catName, q)}</h2>
+      <div class="entry-grid">`;
+    
+    cat.entries.forEach(e => {
+      const note = loc(e, 'note');
+      const review = loc(e, 'review');
+      
+      html += `<div class="card">
+        <div class="card-top">
+          <h3 class="card-name">${hl(e.name, q)}</h3>
+          ${e.area ? `<span class="card-area">${hl(e.area, q)}</span>` : ''}
+        </div>
+        ${note ? `<p class="card-note">${hl(note, q)}</p>` : ''}
+        ${review ? `<p class="card-review">⭐ ${hl(review, q)}</p>` : ''}
+        <div class="card-actions">
+          ${e.phone ? `<a href="${phoneHref(e.phone)}" class="btn-phone">📞 ${esc(e.phone)}</a>` : ''}
+          ${e.phone2 ? `<a href="${phoneHref(e.phone2)}" class="btn-phone2">📞 ${esc(e.phone2)}</a>` : ''}
+          ${e.email ? `<a href="mailto:${esc(e.email)}" class="btn-email">✉️ ${esc(e.email)}</a>` : ''}
+          ${e.website ? `<a href="${webHref(e.website)}" target="_blank" rel="noopener" class="btn-web">🌐 ${t('website')}</a>` : ''}
+        </div>
+      </div>`;
+    });
+    
+    html += `</div></div>`;
+  });
+  
+  container.innerHTML = html;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   EVENT HANDLERS
+   ══════════════════════════════════════════════════════════════════ */
+function setLang(l) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === l));
+  render();
+}
+
+function setCat(id) {
+  activeCat = activeCat === id ? null : id;
+  render();
+  // Scroll to directory
+  if (activeCat) document.querySelector('.directory').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Search
+const searchInput = document.getElementById('searchInput');
+const clearBtn = document.getElementById('clearBtn');
+
+searchInput.addEventListener('input', () => {
+  searchQuery = searchInput.value;
+  activeCat = null;
+  clearBtn.style.display = searchQuery ? '' : 'none';
+  renderDirectory();
+  renderPills();
+});
+
+clearBtn.addEventListener('click', () => {
+  searchInput.value = '';
+  searchQuery = '';
+  clearBtn.style.display = 'none';
+  searchInput.focus();
+  render();
+});
+
+// Back to top
+window.addEventListener('scroll', () => {
+  document.getElementById('backToTop').classList.toggle('visible', window.scrollY > 400);
+});
+
+/* ══════════════════════════════════════════════════════════════════
+   FALLBACK DATA (built-in copy from the Excel template)
+   — Used when no Google Sheet URL is configured —
+   ══════════════════════════════════════════════════════════════════ */
+
+const FALLBACK_CATEGORIES = [
+  {category_id:"accountants",icon:"⚖️",name_en:"Accountants & Legal",name_es:"Contables y Abogados"},
+  {category_id:"aircon",icon:"❄️",name_en:"Air Conditioning",name_es:"Aire Acondicionado"},
+  {category_id:"alarm",icon:"🔒",name_en:"Alarm & CCTV",name_es:"Alarmas y CCTV"},
+  {category_id:"builders",icon:"🏗️",name_en:"Builders & Construction",name_es:"Constructores"},
+  {category_id:"cafes",icon:"🍽️",name_en:"Cafés & Restaurants",name_es:"Cafeterías y Restaurantes"},
+  {category_id:"car",icon:"🚗",name_en:"Car Services",name_es:"Servicios de Coche"},
+  {category_id:"childcare",icon:"👶",name_en:"Childcare",name_es:"Cuidado Infantil"},
+  {category_id:"cleaners",icon:"🧹",name_en:"Cleaners & Home Care",name_es:"Limpieza y Hogar"},
+  {category_id:"dentists",icon:"🦷",name_en:"Dentists",name_es:"Dentistas"},
+  {category_id:"doctors",icon:"🏥",name_en:"Doctors & Medical",name_es:"Médicos y Salud"},
+  {category_id:"electricians",icon:"⚡",name_en:"Electricians & Solar",name_es:"Electricistas y Solar"},
+  {category_id:"energy",icon:"💡",name_en:"Energy & Utilities",name_es:"Energía y Suministros"},
+  {category_id:"estate",icon:"🏠",name_en:"Estate Agents & Property",name_es:"Inmobiliarias"},
+  {category_id:"exercise",icon:"💪",name_en:"Exercise & Fitness",name_es:"Ejercicio y Fitness"},
+  {category_id:"gardeners",icon:"🌿",name_en:"Gardeners",name_es:"Jardineros"},
+  {category_id:"golf",icon:"⛳",name_en:"Golf",name_es:"Golf"},
+  {category_id:"hair",icon:"💇",name_en:"Hair & Beauty",name_es:"Peluquería y Estética"},
+  {category_id:"handyman",icon:"🔧",name_en:"Handyman",name_es:"Manitas"},
+  {category_id:"hospitals",icon:"🏥",name_en:"Hospitals",name_es:"Hospitales"},
+  {category_id:"internet",icon:"📡",name_en:"Internet & TV",name_es:"Internet y TV"},
+  {category_id:"locksmith",icon:"🔑",name_en:"Locksmith",name_es:"Cerrajero"},
+  {category_id:"firewood",icon:"🔥",name_en:"Log Burners & Firewood",name_es:"Chimeneas y Leña"},
+  {category_id:"markets",icon:"🛒",name_en:"Markets",name_es:"Mercadillos"},
+  {category_id:"massage",icon:"💆",name_en:"Massage & Wellness",name_es:"Masaje y Bienestar"},
+  {category_id:"opticians",icon:"👓",name_en:"Opticians",name_es:"Ópticas"},
+  {category_id:"painting",icon:"🎨",name_en:"Painting & Decorating",name_es:"Pintura y Decoración"},
+  {category_id:"pensions",icon:"💰",name_en:"Pensions & Investments",name_es:"Pensiones e Inversiones"},
+  {category_id:"pets",icon:"🐾",name_en:"Pets",name_es:"Mascotas"},
+  {category_id:"plumbers",icon:"🔧",name_en:"Plumbers",name_es:"Fontaneros"},
+  {category_id:"pools",icon:"🏊",name_en:"Pool Services",name_es:"Servicios de Piscina"},
+  {category_id:"chef",icon:"👨‍🍳",name_en:"Private Chef & Catering",name_es:"Chef Privado y Catering"},
+  {category_id:"psychology",icon:"🧠",name_en:"Psychology & Counselling",name_es:"Psicología"},
+  {category_id:"removals",icon:"🚚",name_en:"Removals & Transport",name_es:"Mudanzas y Transporte"},
+  {category_id:"schools",icon:"🎓",name_en:"Schools",name_es:"Colegios"},
+  {category_id:"shopping",icon:"🛍️",name_en:"Shopping",name_es:"Compras"},
+  {category_id:"taxi",icon:"🚕",name_en:"Taxi Services",name_es:"Servicios de Taxi"},
+  {category_id:"vets",icon:"🐕",name_en:"Vets",name_es:"Veterinarios"},
+  {category_id:"windows",icon:"🪟",name_en:"Window & Glass",name_es:"Ventanas y Cristalería"},
+  {category_id:"volunteering",icon:"❤️",name_en:"Volunteering & Charities",name_es:"Voluntariado y ONGs"},
+];
+
+const FALLBACK_RESORT = [
+  {label_en:"Community Office",label_es:"Oficina Comunitaria",phone:"+34 968 031 034",phone2:"+34 653 972 793",email:"ameseguer@msgi.es"},
+  {label_en:"Security / Vigilante",label_es:"Seguridad / Vigilante",phone:"+34 968 031 639",phone2:"+34 662 626 925",email:""},
+  {label_en:"Trash Disposal",label_es:"Recogida de Basura",phone:"+34 968 031 034",phone2:"",email:""},
+  {label_en:"Golf Pro Shop",label_es:"Tienda de Golf",phone:"+34 968 033 002",phone2:"",email:""},
+  {label_en:"Golf Course Marshall",label_es:"Marshall del Campo",phone:"+34 660 699 158",phone2:"",email:""},
+  {label_en:"Club House (Sandaló's)",label_es:"Club House (Sandaló's)",phone:"+34 968 031 001",phone2:"",email:""},
+];
+
+const FALLBACK_ENTRIES = [
+  {category_id:"accountants",name:"La Zenia Legal Torrevieja",phone:"",phone2:"",email:"",website:"www.indelaw.es",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"accountants",name:"Abad Lawyers & Accountants",phone:"",phone2:"",email:"",website:"www.abadabogados.com",area:"Los Alcázares",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"accountants",name:"LS Solicitors",phone:"",phone2:"",email:"",website:"www.lssolicitors.es",area:"La Torre",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"aircon",name:"Antonio Muñoz",phone:"+34 699 81 90 63",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"aircon",name:"Dave Air Mar Menor",phone:"+34 697 851 936",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"aircon",name:"Javi Porras",phone:"+34 629 69 04 93",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"aircon",name:"Michael Bowins (MB Services)",phone:"+34 615 35 62 89",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"alarm",name:"Lee Digital",phone:"+34 634 306 357",phone2:"",email:"",website:"www.lee-digital.com",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"builders",name:"Coral Pools",phone:"+34 607 262 374",phone2:"",email:"",website:"",area:"",note_en:"Pool construction, repairs & maintenance",note_es:"Construcción, reparación y mantenimiento de piscinas",review_en:"",review_es:""},
+  {category_id:"builders",name:"Giuseppe Home Improvement",phone:"+34 622 318 380",phone2:"",email:"",website:"",area:"",note_en:"All types of maintenance",note_es:"Todo tipo de mantenimiento",review_en:"",review_es:""},
+  {category_id:"builders",name:"Sunsure Hub",phone:"+34 868 321 959",phone2:"",email:"",website:"www.sunsureconstruction.com",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"builders",name:"Obramat Murcia (Bricomart)",phone:"+34 968 679 704",phone2:"",email:"",website:"",area:"",note_en:"Building supplies",note_es:"Materiales de construcción",review_en:"",review_es:""},
+  {category_id:"cafes",name:"Sandaló's",phone:"+34 968 031 001",phone2:"",email:"",website:"",area:"",note_en:"El Valle Clubhouse",note_es:"Restaurante del Club",review_en:"",review_es:""},
+  {category_id:"cafes",name:"K's Coffee Bar",phone:"",phone2:"",email:"",website:"",area:"Lo Santiago",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"cafes",name:"Grandma's Kitchen",phone:"",phone2:"",email:"",website:"",area:"Balsicas",note_en:"Breakfast, behind Jaipur",note_es:"Desayunos, detrás de Jaipur",review_en:"",review_es:""},
+  {category_id:"cafes",name:"Luis Miguel Pastelerías",phone:"+34 968 799 181",phone2:"",email:"",website:"luismiguelpastelerias.es",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"cafes",name:"Altaona Golf & Country Village",phone:"+34 968 95 28 44",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"cafes",name:"Al Hambra (Indian)",phone:"+34 968 58 02 16",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"cafes",name:"Jaipur Indian",phone:"+34 968 58 05 65",phone2:"",email:"",website:"",area:"",note_en:"Provide transport",note_es:"Ofrecen transporte",review_en:"",review_es:""},
+  {category_id:"cafes",name:"Gurkha Durbar Nepalese",phone:"+34 637 05 38 09",phone2:"",email:"",website:"",area:"Los Alcázares",note_en:"WhatsApp Khim for reservations",note_es:"WhatsApp a Khim para reservas",review_en:"",review_es:""},
+  {category_id:"cafes",name:"New York's",phone:"",phone2:"",email:"",website:"",area:"Lo Santiago",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"cafes",name:"El Baret Wine Bar",phone:"+34 633 740 300",phone2:"",email:"",website:"elbaretwinebar.com",area:"Murcia Centre",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"car",name:"Autogenie",phone:"+34 623 220 648",phone2:"",email:"",website:"",area:"",note_en:"Paintwork jobs",note_es:"Trabajos de pintura",review_en:"",review_es:""},
+  {category_id:"car",name:"Juan Jose Mechanic",phone:"+34 693 47 02 33",phone2:"",email:"",website:"",area:"",note_en:"24hr call out, comes to estate",note_es:"Servicio 24h, va a la urbanización",review_en:"",review_es:""},
+  {category_id:"car",name:"Jordan (Mechanic)",phone:"+34 656 71 81 22",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"car",name:"Leo (Mechanic)",phone:"+34 630 25 24 42",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"car",name:"Zac Car Cleaning",phone:"+34 711 039 537",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"car",name:"Airpark Murcia (Airport Parking)",phone:"+34 618 806 989",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"Impeccable service — Lisette",review_es:"Servicio impecable — Lisette"},
+  {category_id:"childcare",name:"Violeta",phone:"+34 651 571 020",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"childcare",name:"Little Legs Travel Spain",phone:"+34 684 77 72 33",phone2:"",email:"",website:"littlelegstravelspain.com",area:"",note_en:"Baby & child equipment hire",note_es:"Alquiler de equipamiento infantil",review_en:"",review_es:""},
+  {category_id:"cleaners",name:"Miss Peas Cleaning Services",phone:"+34 711 038 623",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"cleaners",name:"Carolina Lopez",phone:"+34 687 74 20 20",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"cleaners",name:"Billy Frances",phone:"+34 684 16 75 43",phone2:"",email:"",website:"",area:"",note_en:"Sofa cleaning & terrace washing",note_es:"Limpieza de sofás y terrazas",review_en:"Billy is fabulous! — Jo & Sinead",review_es:"¡Billy es fabuloso! — Jo y Sinead"},
+  {category_id:"cleaners",name:"Jesse's Jet Washing",phone:"+44 7876 050 874",phone2:"",email:"",website:"",area:"",note_en:"WhatsApp",note_es:"WhatsApp",review_en:"",review_es:""},
+  {category_id:"dentists",name:"Centro Odontológico Escrident",phone:"+34 635 852 741",phone2:"",email:"",website:"www.escrident.es",area:"Balsicas",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"dentists",name:"Murcia Dentist",phone:"+34 968 370 911",phone2:"",email:"",website:"",area:"Sucina",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"dentists",name:"Dentist Covera",phone:"+34 692 597 976",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"dentists",name:"Clínica Torralba",phone:"+34 626 601 717",phone2:"",email:"",website:"",area:"Balsicas",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"dentists",name:"MAYZ Dental",phone:"+34 711 072 216",phone2:"",email:"",website:"",area:"Los Alcázares",note_en:"English speaking",note_es:"Hablan inglés",review_en:"",review_es:""},
+  {category_id:"doctors",name:"Doctors Surgery Los Martínez",phone:"+34 968 383 260",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"doctors",name:"Centro De Salud San Javier",phone:"+34 968 191 866",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"doctors",name:"Walk-in Clinic Covera",phone:"",phone2:"",email:"",website:"",area:"",note_en:"Campo de Cartagena",note_es:"Campo de Cartagena",review_en:"",review_es:""},
+  {category_id:"doctors",name:"Dr. Andrés Rodríguez Tellez",phone:"+34 660 16 40 33",phone2:"",email:"",website:"",area:"",note_en:"Emergency call-out, English speaking",note_es:"Urgencias a domicilio, habla inglés",review_en:"",review_es:""},
+  {category_id:"doctors",name:"Medi Fiat C",phone:"",phone2:"",email:"",website:"guiamedica.fiatc.es",area:"",note_en:"Health Insurance",note_es:"Seguro médico",review_en:"",review_es:""},
+  {category_id:"doctors",name:"Salus Mar Menor",phone:"",phone2:"",email:"",website:"",area:"",note_en:"Private MRI with prescription",note_es:"Resonancia privada con receta",review_en:"",review_es:""},
+  {category_id:"electricians",name:"Reformas Integrales PK",phone:"+34 616 888 068",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"electricians",name:"AMPS Green Energy",phone:"",phone2:"",email:"",website:"ampsgreenenergy.com",area:"",note_en:"Solar panels",note_es:"Paneles solares",review_en:"",review_es:""},
+  {category_id:"electricians",name:"Gestaner (Solar)",phone:"+34 644 116 413",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"energy",name:"Ana Saez — Compare the Mercado",phone:"+34 613 36 44 96",phone2:"",email:"ana@comparethemercado.com",website:"www.comparethemercado.com",area:"",note_en:"Gas/electric switch. Resident on El Valle, Spanish & English.",note_es:"Cambio de gas/electricidad. Residente en El Valle, habla español e inglés.",review_en:"Highly recommended by many residents",review_es:"Muy recomendada por muchos residentes"},
+  {category_id:"energy",name:"Repsol (Gas & Electric)",phone:"+34 639 858 725",phone2:"",email:"",website:"www.repsol.es/particulares/hogar/",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"estate",name:"Keystyle Properties",phone:"+34 603 042 152",phone2:"",email:"",website:"www.keystyleproperties.com",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"estate",name:"Sunsure Hub",phone:"+34 868 321 959",phone2:"",email:"",website:"www.sunsurehub.com",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"estate",name:"Selling Sunset",phone:"+34 647 12 82 12",phone2:"",email:"",website:"www.sellingsunset.es",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"exercise",name:"Ali Keys",phone:"+44 7769 685 031",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"exercise",name:"Diamond Health & Fitness",phone:"",phone2:"",email:"",website:"www.diamondhealthandfitness.com",area:"Lo Santiago",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"exercise",name:"Almond Pilates (Alix)",phone:"+34 624 38 59 96",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"Recommended by Lisa and others",review_es:"Recomendado por Lisa y otros"},
+  {category_id:"gardeners",name:"Linden",phone:"+34 711 026 476",phone2:"",email:"",website:"",area:"",note_en:"WhatsApp",note_es:"WhatsApp",review_en:"",review_es:""},
+  {category_id:"gardeners",name:"Garden Waste Collection (STV)",phone:"+34 968 031 034",phone2:"",email:"",website:"",area:"",note_en:"Via Community Office",note_es:"A través de la Oficina Comunitaria",review_en:"",review_es:""},
+  {category_id:"golf",name:"El Valle Pro Shop",phone:"+34 968 033 002",phone2:"",email:"",website:"www.gnkgolf.com/campos/elvalle",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"golf",name:"La Torre Pro Shop",phone:"+34 968 032 378",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"golf",name:"Hac Req Pro Shop",phone:"+34 968 038 051",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"golf",name:"The Great Golf Company",phone:"+34 968 57 54 19",phone2:"",email:"",website:"",area:"Balsicas",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"golf",name:"Altaona Driving Range",phone:"",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"hair",name:"Katie's Hair & Beauty Lounge",phone:"+34 711 029 597",phone2:"",email:"",website:"",area:"Balsicas",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"hair",name:"Shellie (Mobile)",phone:"+34 711 037 331",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"hair",name:"Jhossya Hair Studio",phone:"+34 684 008 4948",phone2:"",email:"",website:"",area:"Corvera",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"hair",name:"LUXE Hair & Beauty",phone:"+34 711 04 94 61",phone2:"",email:"",website:"",area:"Roldán",note_en:"",note_es:"",review_en:"Recommended by Lisa",review_es:"Recomendado por Lisa"},
+  {category_id:"hair",name:"Escape",phone:"+44 7956 676 768",phone2:"",email:"",website:"",area:"Lo Santiago",note_en:"Nails, massage, aesthetics",note_es:"Uñas, masaje, estética",review_en:"",review_es:""},
+  {category_id:"hair",name:"Carmen Nails Salón",phone:"+34 652 721 913",phone2:"",email:"",website:"",area:"",note_en:"On El Valle",note_es:"En El Valle",review_en:"",review_es:""},
+  {category_id:"hair",name:"Nails Etc & More",phone:"+34 601 507 714",phone2:"",email:"",website:"",area:"Altaona Golf Resort",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"handyman",name:"Giuseppe Home Improvement",phone:"+34 622 318 380",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"handyman",name:"MJ Villa Painting & Maintenance",phone:"+34 711 038 623",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"handyman",name:"El Toro — Lerrico Messina",phone:"+34 711 059 996",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"handyman",name:"Pro Toldos Murcia",phone:"+34 662 204 400",phone2:"",email:"",website:"",area:"",note_en:"Awnings & outdoor spaces",note_es:"Toldos y espacios exteriores",review_en:"Recommended by Carmen Frutos",review_es:"Recomendado por Carmen Frutos"},
+  {category_id:"hospitals",name:"Los Arcos",phone:"+34 968 565 000",phone2:"",email:"",website:"",area:"San Javier",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"hospitals",name:"Arrixaca",phone:"+34 968 369 500",phone2:"",email:"",website:"",area:"Murcia",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"hospitals",name:"Quirón Salud",phone:"",phone2:"",email:"",website:"www.quironsalud.com",area:"Murcia City",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"internet",name:"Avatel",phone:"+34 604 472 435",phone2:"",email:"",website:"www.avatel.es",area:"La Torre Golf Resort",note_en:"",note_es:"",review_en:"18 months, never went down once. 5★ — Steve",review_es:"18 meses sin caerse. 5★ — Steve"},
+  {category_id:"internet",name:"Murciafibra — Kevin",phone:"+34 673 44 36 15",phone2:"",email:"",website:"www.murciafibra.com",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"internet",name:"Internet TV (All channels)",phone:"+44 7391 022 864",phone2:"",email:"",website:"",area:"",note_en:"WhatsApp. No contract. English speaking.",note_es:"WhatsApp. Sin contrato. Hablan inglés.",review_en:"",review_es:""},
+  {category_id:"locksmith",name:"Dave Beck — Lock & Key Spain",phone:"+34 620 627 640",phone2:"",email:"",website:"www.LockAndKeySpain.com",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"locksmith",name:"Unlocked",phone:"+34 653 55 11 55",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"firewood",name:"Antonio (Firewood)",phone:"+34 647 476 171",phone2:"",email:"",website:"",area:"",note_en:"Bulk delivery, sizes by request",note_es:"Entrega a granel, tamaños a medida",review_en:"Recommended by many members",review_es:"Recomendado por muchos miembros"},
+  {category_id:"firewood",name:"Chimeneas Llofrío",phone:"",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"firewood",name:"Chimeneas Llamas",phone:"",phone2:"",email:"",website:"",area:"Mazarrón",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"firewood",name:"Sooty & Son (Chimney Sweep)",phone:"+34 660 478 881",phone2:"",email:"",website:"",area:"",note_en:"WhatsApp",note_es:"WhatsApp",review_en:"",review_es:""},
+  {category_id:"markets",name:"Roldán Market",phone:"",phone2:"",email:"",website:"",area:"",note_en:"Mondays — High Street",note_es:"Lunes — Calle principal",review_en:"",review_es:""},
+  {category_id:"markets",name:"Los Alcázares Market",phone:"",phone2:"",email:"",website:"",area:"",note_en:"Saturdays",note_es:"Sábados",review_en:"",review_es:""},
+  {category_id:"markets",name:"Santiago de la Ribera Market",phone:"",phone2:"",email:"",website:"",area:"",note_en:"Wednesdays",note_es:"Miércoles",review_en:"",review_es:""},
+  {category_id:"massage",name:"Yara Wellness & Retreats",phone:"+34 603 370 187",phone2:"",email:"",website:"www.yarawellness.eu",area:"",note_en:"Sports & functional massage, wellness & healing",note_es:"Masaje deportivo y funcional, bienestar",review_en:"Recommended by Elise",review_es:"Recomendado por Elise"},
+  {category_id:"massage",name:"Stu Diamond (Chiropractor)",phone:"+34 634 348 991",phone2:"",email:"",website:"",area:"Lo Santiago",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"massage",name:"Carlos J Lluch (Physiotherapist)",phone:"+34 655 45 77 08",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"Comes to your residence, speaks English",review_es:"Va a tu casa, habla inglés, muy profesional"},
+  {category_id:"opticians",name:"Specsavers La Zenia",phone:"",phone2:"",email:"",website:"",area:"",note_en:"Great English",note_es:"Hablan inglés",review_en:"",review_es:""},
+  {category_id:"opticians",name:"Bonaire Vision",phone:"+34 621 24 07 73",phone2:"",email:"",website:"",area:"Sucina",note_en:"",note_es:"",review_en:"María is very helpful — David Blakey",review_es:"María es muy atenta — David Blakey"},
+  {category_id:"painting",name:"MJ Villa Painting Services",phone:"+34 711 038 623",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"painting",name:"J&M Painting Service",phone:"+34 691 920 685",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"pensions",name:"Jon Pemberton (Blevins Franks)",phone:"+34 711 086 299",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"pets",name:"PAWS4U — Lynda & Bruce",phone:"+34 693 254 319",phone2:"",email:"",website:"",area:"",note_en:"Based on El Valle. Boarding, sitting, walking",note_es:"En El Valle. Alojamiento, cuidado y paseos",review_en:"",review_es:""},
+  {category_id:"pets",name:"Mountain View Luxury Boarding",phone:"+34 676 394 431",phone2:"",email:"",website:"",area:"Fuente Álamo",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"pets",name:"Top Dog Hotel",phone:"+34 669 158 736",phone2:"",email:"",website:"topdoghotel.es",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"pets",name:"Four Paws (Dog Grooming)",phone:"+34 711 048 666",phone2:"",email:"",website:"",area:"La Tercia",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"pets",name:"Noelia Garcia (Dog Grooming)",phone:"+34 645 167 573",phone2:"",email:"",website:"",area:"Dolores de Pacheco",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"pets",name:"Pet Lovers Sucina",phone:"+34 670 876 974",phone2:"",email:"",website:"",area:"",note_en:"Grooming & vet",note_es:"Peluquería y veterinario",review_en:"",review_es:""},
+  {category_id:"pets",name:"Helen",phone:"+34 634 343 723",phone2:"",email:"",website:"",area:"",note_en:"Cat sitting, pet loss grief support, animal reiki",note_es:"Cuidado de gatos, apoyo en duelo de mascotas",review_en:"",review_es:""},
+  {category_id:"plumbers",name:"Tim Hale",phone:"+34 652 351 527",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"Knowledgeable and reliable",review_es:"Profesional y fiable"},
+  {category_id:"plumbers",name:"CJ Fontanería",phone:"+34 696 05 04 62",phone2:"",email:"",website:"",area:"",note_en:"Blockage removal",note_es:"Desatascos",review_en:"",review_es:""},
+  {category_id:"plumbers",name:"Antonio Muñoz (Boiler servicing)",phone:"+34 699 81 90 63",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"pools",name:"Only Pools and Houses",phone:"+34 634 322 147",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"Claire and Archie are brilliant — Lisette",review_es:"Claire y Archie son geniales — Lisette"},
+  {category_id:"pools",name:"Sunsure Hub",phone:"+34 868 321 959",phone2:"",email:"",website:"www.sunsurepropertyservices.com",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"pools",name:"Miss Peas Pool Cleaning",phone:"+34 711 038 623",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"chef",name:"Lourdes Fábregas",phone:"+34 608 290 257",phone2:"",email:"",website:"",area:"",note_en:"Paellas, appetisers, sushi & more. Based at El Valle.",note_es:"Paellas, aperitivos, sushi y más. En El Valle.",review_en:"",review_es:""},
+  {category_id:"psychology",name:"Villa Oasis — Helga",phone:"+34 60 444 3685",phone2:"",email:"helgainn@gmail.com",website:"",area:"",note_en:"CBT, Gestalt, Mindfulness, Group Therapy",note_es:"TCC, Gestalt, Mindfulness, Terapia grupal",review_en:"",review_es:""},
+  {category_id:"psychology",name:"Tracy Cox (Life Coaching)",phone:"+44 7714 125 145",phone2:"",email:"",website:"",area:"",note_en:"Mental health & wellbeing",note_es:"Salud mental y bienestar",review_en:"",review_es:""},
+  {category_id:"removals",name:"Rod Gregory (Man with a Van)",phone:"+34 610 846 260",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"Recommended by Karen and Sue Greenhill",review_es:"Recomendado por Karen y Sue Greenhill"},
+  {category_id:"removals",name:"TD Removals Spain",phone:"",phone2:"",email:"",website:"",area:"",note_en:"Facebook: TyDTransportes",note_es:"Facebook: TyDTransportes",review_en:"",review_es:""},
+  {category_id:"removals",name:"Bus Services (Murcia–Alicante)",phone:"",phone2:"",email:"",website:"www.alsa.es",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"schools",name:"El Limonar International School",phone:"",phone2:"",email:"",website:"",area:"El Palmar, Murcia",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"schools",name:"King's College",phone:"+34 968 032 500",phone2:"",email:"",website:"",area:"La Torre Golf Resort",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"shopping",name:"Dos Mares",phone:"",phone2:"",email:"",website:"",area:"San Javier",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"shopping",name:"Nuevo Condominio",phone:"",phone2:"",email:"",website:"",area:"Murcia",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"shopping",name:"La Zenia",phone:"",phone2:"",email:"",website:"",area:"Torrevieja",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"shopping",name:"Mercadona",phone:"",phone2:"",email:"",website:"",area:"San Javier",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"shopping",name:"Carrefour",phone:"",phone2:"",email:"",website:"",area:"San Javier",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"shopping",name:"Overseas (Iceland, Waitrose)",phone:"",phone2:"",email:"",website:"overseas.es/san-javier/",area:"San Javier",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"shopping",name:"Reeves Butchers Delivery",phone:"+34 711 003 354",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"taxi",name:"Roldán Taxi",phone:"+34 607 85 49 44",phone2:"",email:"",website:"www.taxiroldan.com",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"taxi",name:"Taxis Mar Menor",phone:"+34 659 81 87 56",phone2:"",email:"",website:"taxismarmenor.com",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"taxi",name:"Murcia Taxi",phone:"+34 968 11 11 87",phone2:"",email:"",website:"murciataxi.com",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"taxi",name:"Taxi Isidro",phone:"+34 633 60 79 31",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"taxi",name:"Aroca (Damián)",phone:"+34 616 40 64 02",phone2:"",email:"",website:"transfersaroca.com",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"taxi",name:"Radio Taxi Murcia",phone:"+34 968 24 88 00",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"vets",name:"Zeus Veterinary",phone:"+34 968 580 748",phone2:"",email:"",website:"",area:"Balsicas",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"vets",name:"Pet Lovers Sucina",phone:"+34 670 876 974",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"vets",name:"Medivet Hospital 24h",phone:"+34 968 246 122",phone2:"",email:"",website:"",area:"La Flota",note_en:"",note_es:"",review_en:"Out of hours available, fast service",review_es:"Disponible fuera de horario, servicio rápido"},
+  {category_id:"windows",name:"Solar Guard Window Tinting",phone:"+34 667 278 108",phone2:"",email:"info@solarguardsl.com",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"windows",name:"Oscar Odico (Glass Curtains)",phone:"+34 616 176 610",phone2:"",email:"",website:"",area:"",note_en:"",note_es:"",review_en:"",review_es:""},
+  {category_id:"windows",name:"Servi Comfort",phone:"+34 642 92 47 00",phone2:"",email:"",website:"",area:"",note_en:"Aluminium doors/windows, mosquito screens",note_es:"Puertas/ventanas de aluminio, mosquiteras",review_en:"",review_es:""},
+  {category_id:"volunteering",name:"Galgos del Sol",phone:"",phone2:"",email:"",website:"galgosdelsol.org",area:"",note_en:"Dog charity",note_es:"ONG de galgos",review_en:"",review_es:""},
+  {category_id:"volunteering",name:"Los Infiernos (LIPS)",phone:"",phone2:"",email:"",website:"lipsrescue.com",area:"",note_en:"Dog walking, animal shelter",note_es:"Paseo de perros, refugio",review_en:"",review_es:""},
+  {category_id:"volunteering",name:"MABS",phone:"",phone2:"",email:"",website:"",area:"San Javier",note_en:"Cancer support charity",note_es:"ONG contra el cáncer",review_en:"",review_es:""},
+  {category_id:"volunteering",name:"Andrea's Donkey Sanctuary",phone:"",phone2:"",email:"",website:"",area:"Roldán",note_en:"",note_es:"",review_en:"",review_es:""},
+];
+
+/* ══════════════════════════════════════════════════════════════════
+   BOOT
+   ══════════════════════════════════════════════════════════════════ */
+fetchData();
+</script>
+</body>
+</html>
