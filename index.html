@@ -34,6 +34,78 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════
+   DARK MODE
+   ══════════════════════════════════════════════════════════════════ */
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --green: #3DA87A;
+    --green-dark: #1A3A2C;
+    --green-light: #1A3A2C;
+    --cream: #1A1A18;
+    --warm-white: #222220;
+    --sand: #2A2824;
+    --terracotta: #E8825E;
+    --terra-light: #2E2220;
+    --gold: #D4A740;
+    --text: #E8E0D4;
+    --text-mid: #B8AFA2;
+    --text-light: #8A8278;
+    --border: #3A3630;
+    --red: #E85470;
+    --red-bg: #2A1A1E;
+    --white: #2A2826;
+    --shadow: 0 2px 12px rgba(0,0,0,.25);
+    --shadow-lg: 0 4px 24px rgba(0,0,0,.35);
+  }
+}
+[data-theme="dark"]{
+  --green: #3DA87A;
+  --green-dark: #1A3A2C;
+  --green-light: #1A3A2C;
+  --cream: #1A1A18;
+  --warm-white: #222220;
+  --sand: #2A2824;
+  --terracotta: #E8825E;
+  --terra-light: #2E2220;
+  --gold: #D4A740;
+  --text: #E8E0D4;
+  --text-mid: #B8AFA2;
+  --text-light: #8A8278;
+  --border: #3A3630;
+  --red: #E85470;
+  --red-bg: #2A1A1E;
+  --white: #2A2826;
+  --shadow: 0 2px 12px rgba(0,0,0,.25);
+  --shadow-lg: 0 4px 24px rgba(0,0,0,.35);
+}
+[data-theme="dark"] .site-header{
+  background:linear-gradient(135deg,#1A3A2C 0%,#0F261C 100%);
+}
+[data-theme="dark"] .lang-bar{
+  background:#0F261C;
+}
+[data-theme="dark"] mark{
+  background:#6B5B00;color:#FFE066;
+}
+[data-theme="dark"] .search-input{
+  color:var(--text);
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .site-header{
+    background:linear-gradient(135deg,#1A3A2C 0%,#0F261C 100%);
+  }
+  :root:not([data-theme="light"]) .lang-bar{
+    background:#0F261C;
+  }
+  :root:not([data-theme="light"]) mark{
+    background:#6B5B00;color:#FFE066;
+  }
+  :root:not([data-theme="light"]) .search-input{
+    color:var(--text);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
    RESET
    ══════════════════════════════════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -261,6 +333,38 @@ mark{background:#FDE68A;border-radius:3px;padding:0 2px}
   .resort-grid{grid-template-columns:1fr}
   .btn-phone,.btn-phone2{width:100%;justify-content:center}
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   THEME TOGGLE
+   ══════════════════════════════════════════════════════════════════ */
+.theme-btn{
+  background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.25);
+  border-radius:8px;padding:8px 14px;font-size:20px;
+  color:#fff;display:inline-flex;align-items:center;
+  transition:all .15s;line-height:1;
+}
+.theme-btn:hover{background:rgba(255,255,255,.22)}
+
+/* ══════════════════════════════════════════════════════════════════
+   SUGGEST A LISTING
+   ══════════════════════════════════════════════════════════════════ */
+.suggest-banner{
+  padding:24px 0;text-align:center;
+}
+.suggest-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--green);color:#fff;border:none;
+  padding:16px 32px;border-radius:var(--radius);
+  font-size:19px;font-weight:700;font-family:inherit;
+  box-shadow:var(--shadow);transition:transform .1s,filter .15s;
+  text-decoration:none;
+}
+.suggest-btn:hover{filter:brightness(1.1)}
+.suggest-btn:active{transform:scale(.97)}
+.suggest-note{
+  font-size:14px;color:var(--text-light);margin-top:10px;
+  max-width:500px;margin-left:auto;margin-right:auto;
+}
 </style>
 </head>
 <body>
@@ -268,6 +372,7 @@ mark{background:#FDE68A;border-radius:3px;padding:0 2px}
 <!-- ═══════════ LANGUAGE BAR ═══════════ -->
 <div class="lang-bar">
   <div class="inner">
+    <button class="theme-btn" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
     <button class="lang-btn active" data-lang="en" onclick="setLang('en')">🇬🇧 English</button>
     <button class="lang-btn" data-lang="es" onclick="setLang('es')">🇪🇸 Español</button>
   </div>
@@ -336,6 +441,16 @@ mark{background:#FDE68A;border-radius:3px;padding:0 2px}
       <p class="loading-emoji">📡</p>
       <p class="loading-text">Loading directory…</p>
     </div>
+  </div>
+</div>
+
+<!-- ═══════════ SUGGEST A LISTING ═══════════ -->
+<div class="suggest-banner" id="suggestBanner">
+  <div class="inner">
+    <a href="PASTE_GOOGLE_FORM_URL_HERE" target="_blank" rel="noopener" class="suggest-btn" id="suggestBtn">
+      ➕ <span data-i18n="suggestBtn">Suggest a Listing</span>
+    </a>
+    <p class="suggest-note" data-i18n="suggestNote">Know a great local service? Submit it and we'll review it for the directory.</p>
   </div>
 </div>
 
@@ -408,6 +523,8 @@ const I18N = {
     loading: 'Loading directory…',
     errorTitle: 'Could not load directory',
     errorHint: 'Please check your internet connection and try again.',
+    suggestBtn: 'Suggest a Listing',
+    suggestNote: 'Know a great local service? Submit it and we\'ll review it for the directory.',
   },
   es: {
     subtitle: 'Directorio Comunitario',
@@ -430,6 +547,8 @@ const I18N = {
     loading: 'Cargando directorio…',
     errorTitle: 'No se pudo cargar el directorio',
     errorHint: 'Comprueba tu conexión a internet e inténtalo de nuevo.',
+    suggestBtn: 'Sugerir un Listado',
+    suggestNote: '¿Conoces un buen servicio local? Envíalo y lo revisaremos para el directorio.',
   }
 };
 
@@ -600,6 +719,7 @@ function renderDirectory() {
   // Show/hide resort & pills based on search
   document.getElementById('resortSection').style.display = (!q && !activeCat) ? '' : 'none';
   document.getElementById('pillsWrap').style.display = q ? 'none' : '';
+  document.getElementById('suggestBanner').style.display = q ? 'none' : '';
   
   // Build category→entries map
   const catMap = {};
@@ -637,12 +757,17 @@ function renderDirectory() {
   }
   
   // No results
-  if (cats.length === 0) {
+  if (cats.length === 0 && q) {
     container.innerHTML = `<div class="no-results">
       <p class="no-results-emoji">🤔</p>
       <p class="no-results-text">${t('noResultsFor')} "${esc(q)}"</p>
       <p class="no-results-hint">${t('noHint')}</p>
     </div>`;
+    return;
+  }
+  
+  if (cats.length === 0) {
+    container.innerHTML = '';
     return;
   }
   
@@ -719,6 +844,45 @@ clearBtn.addEventListener('click', () => {
 window.addEventListener('scroll', () => {
   document.getElementById('backToTop').classList.toggle('visible', window.scrollY > 400);
 });
+
+/* ══════════════════════════════════════════════════════════════════
+   DARK MODE TOGGLE
+   ══════════════════════════════════════════════════════════════════ */
+function toggleTheme() {
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
+  
+  let next;
+  if (!current) {
+    // No override — currently following system. Toggle to opposite.
+    next = prefersDark ? 'light' : 'dark';
+  } else if (current === 'dark') {
+    next = 'light';
+  } else {
+    next = 'dark';
+  }
+  
+  html.setAttribute('data-theme', next);
+  localStorage.setItem('ev-theme', next);
+  updateThemeIcon();
+}
+
+function updateThemeIcon() {
+  const btn = document.getElementById('themeToggle');
+  if (!btn) return;
+  const theme = document.documentElement.getAttribute('data-theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
+  const isDark = theme === 'dark' || (!theme && prefersDark);
+  btn.textContent = isDark ? '☀️' : '🌙';
+}
+
+// Restore saved theme on load
+(function() {
+  const saved = localStorage.getItem('ev-theme');
+  if (saved) document.documentElement.setAttribute('data-theme', saved);
+  updateThemeIcon();
+})();
 
 /* ══════════════════════════════════════════════════════════════════
    FALLBACK DATA (built-in copy from the Excel template)
