@@ -564,6 +564,11 @@ let DATA = { categories: [], entries: [], resort: [] };
    CSV PARSER (no dependencies)
    ══════════════════════════════════════════════════════════════════ */
 function parseCSV(text) {
+  // Strip BOM if present
+  if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+  text = text.trim();
+  if (!text) return [];
+  
   const lines = [];
   let current = '';
   let inQuotes = false;
@@ -590,6 +595,7 @@ function parseCSV(text) {
     else { rows[rows.length-1].push(cell); }
   }
   
+  // Clean headers: trim, lowercase-safe
   const headers = rows[0].map(h => h.trim());
   return rows.slice(1).filter(r => r.some(c => c.trim())).map(row => {
     const obj = {};
@@ -613,7 +619,6 @@ function useFallbackData() {
    ══════════════════════════════════════════════════════════════════ */
 async function fetchData() {
   if (SHEET_URLS.categories.startsWith('PASTE_')) {
-    // No Google Sheet configured — use built-in fallback data
     useFallbackData();
     render();
     return;
@@ -621,13 +626,39 @@ async function fetchData() {
   
   try {
     const [catRes, entRes, resortRes] = await Promise.all([
-      fetch(SHEET_URLS.categories).then(r => r.text()),
-      fetch(SHEET_URLS.entries).then(r => r.text()),
-      fetch(SHEET_URLS.resort_contacts).then(r => r.text()),
+      fetch(SHEET_URLS.categories).then(r => {
+        if (!r.ok) throw new Error('Categories fetch failed: ' + r.status);
+        return r.text();
+      }),
+      fetch(SHEET_URLS.entries).then(r => {
+        if (!r.ok) throw new Error('Entries fetch failed: ' + r.status);
+        return r.text();
+      }),
+      fetch(SHEET_URLS.resort_contacts).then(r => {
+        if (!r.ok) throw new Error('Resort fetch failed: ' + r.status);
+        return r.text();
+      }),
     ]);
+    
     DATA.categories = parseCSV(catRes);
     DATA.entries = parseCSV(entRes);
     DATA.resort = parseCSV(resortRes);
+    
+    // Debug: log to console so you can inspect what came back
+    console.log('Loaded from Google Sheets:', {
+      categories: DATA.categories.length,
+      entries: DATA.entries.length,
+      resort: DATA.resort.length,
+    });
+    if (DATA.categories.length > 0) console.log('Sample category keys:', Object.keys(DATA.categories[0]));
+    if (DATA.entries.length > 0) console.log('Sample entry keys:', Object.keys(DATA.entries[0]));
+    
+    // If sheets returned data but with wrong/empty headers, fall back
+    if (DATA.categories.length === 0 || DATA.entries.length === 0) {
+      console.warn('Sheets returned empty data, using fallback');
+      useFallbackData();
+    }
+    
     render();
   } catch(e) {
     console.error('Fetch error, using fallback:', e);
