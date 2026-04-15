@@ -126,19 +126,39 @@ h1,h2,h3{font-family:'Lora','Georgia',serif}
    ══════════════════════════════════════════════════════════════════ */
 .lang-bar{
   background:var(--green-dark);padding:8px 0;
-  display:flex;justify-content:flex-end;
 }
-.lang-bar .inner{display:flex;justify-content:flex-end;gap:6px;width:100%}
-.lang-btn{
-  background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.25);
-  border-radius:8px;padding:8px 20px;font-size:17px;font-weight:500;
-  color:#fff;display:inline-flex;align-items:center;gap:6px;
-  transition:all .15s;
+.lang-bar .inner{display:flex;align-items:center;gap:6px;width:100%}
+.topbar-btn{
+  background:rgba(255,255,255,.12);border:2px solid transparent;
+  border-radius:10px;padding:7px 12px;font-size:22px;
+  color:#fff;display:inline-flex;align-items:center;justify-content:center;
+  transition:all .15s;line-height:1;text-decoration:none;
+  min-width:44px;min-height:44px;cursor:pointer;
 }
-.lang-btn:hover{background:rgba(255,255,255,.22)}
-.lang-btn.active{
-  background:rgba(255,255,255,.95);color:var(--green-dark);
-  font-weight:700;border-color:#fff;
+.topbar-btn:hover{background:rgba(255,255,255,.22)}
+.topbar-btn.active{
+  background:rgba(255,255,255,.25);
+  border-color:rgba(255,255,255,.7);
+}
+.suggest-topbar{
+  background:rgba(255,255,255,.92);color:var(--green-dark);
+  font-family:inherit;font-size:15px;font-weight:700;
+  padding:7px 16px;margin-right:6px;letter-spacing:.2px;
+}
+.suggest-topbar:hover{background:#fff;color:var(--green-dark)}
+[data-theme="dark"] .suggest-topbar{
+  background:rgba(255,255,255,.18);color:#fff;
+}
+[data-theme="dark"] .suggest-topbar:hover{
+  background:rgba(255,255,255,.3);color:#fff;
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .suggest-topbar{
+    background:rgba(255,255,255,.18);color:#fff;
+  }
+  :root:not([data-theme="light"]) .suggest-topbar:hover{
+    background:rgba(255,255,255,.3);color:#fff;
+  }
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -346,35 +366,20 @@ mark{background:#FDE68A;border-radius:3px;padding:0 2px}
 .theme-btn:hover{background:rgba(255,255,255,.22)}
 
 /* ══════════════════════════════════════════════════════════════════
-   SUGGEST A LISTING
+   SUGGEST A LISTING (in top bar)
    ══════════════════════════════════════════════════════════════════ */
-.suggest-banner{
-  padding:24px 0;text-align:center;
-}
-.suggest-btn{
-  display:inline-flex;align-items:center;gap:10px;
-  background:var(--green);color:#fff;border:none;
-  padding:16px 32px;border-radius:var(--radius);
-  font-size:19px;font-weight:700;font-family:inherit;
-  box-shadow:var(--shadow);transition:transform .1s,filter .15s;
-  text-decoration:none;
-}
-.suggest-btn:hover{filter:brightness(1.1)}
-.suggest-btn:active{transform:scale(.97)}
-.suggest-note{
-  font-size:14px;color:var(--text-light);margin-top:10px;
-  max-width:500px;margin-left:auto;margin-right:auto;
-}
 </style>
 </head>
 <body>
 
-<!-- ═══════════ LANGUAGE BAR ═══════════ -->
+<!-- ═══════════ TOP BAR ═══════════ -->
 <div class="lang-bar">
   <div class="inner">
     <button class="theme-btn" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
-    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">🇬🇧 English</button>
-    <button class="lang-btn" data-lang="es" onclick="setLang('es')">🇪🇸 Español</button>
+    <div style="flex:1"></div>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdvXid2bouO1qAmJ1ZNenmvPuMjvBh41Sl7sQkF5-Ewtfq4Wg/viewform" target="_blank" rel="noopener" class="topbar-btn suggest-topbar" id="suggestTopBtn" data-i18n="suggestBtn">Suggest listing</a>
+    <button class="topbar-btn active" data-lang="en" onclick="setLang('en')" aria-label="English">🇬🇧</button>
+    <button class="topbar-btn" data-lang="es" onclick="setLang('es')" aria-label="Español">🇪🇸</button>
   </div>
 </div>
 
@@ -444,16 +449,6 @@ mark{background:#FDE68A;border-radius:3px;padding:0 2px}
   </div>
 </div>
 
-<!-- ═══════════ SUGGEST A LISTING ═══════════ -->
-<div class="suggest-banner" id="suggestBanner">
-  <div class="inner">
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdvXid2bouO1qAmJ1ZNenmvPuMjvBh41Sl7sQkF5-Ewtfq4Wg/viewform?usp=publish-editor" target="_blank" rel="noopener" class="suggest-btn" id="suggestBtn">
-      ➕ <span data-i18n="suggestBtn">Suggest a Listing</span>
-    </a>
-    <p class="suggest-note" data-i18n="suggestNote">Know a great local service? Submit it and we'll review it for the directory.</p>
-  </div>
-</div>
-
 <!-- ═══════════ FOOTER ═══════════ -->
 <footer class="site-footer">
   <div class="inner" style="max-width:700px">
@@ -518,7 +513,7 @@ const I18N = {
     categories: 'categories', category: 'category', in_: 'in',
     website: 'Website',
     footer1: 'Listings are personal recommendations from the community. They are not vetted, checked, or endorsed by the administration.',
-    footer2: 'To suggest a new listing or update, please contact the page maintainer.',
+    footer2: 'To suggest a new listing or update, please contact the page maintainer. Email: stevesmith@elvalleesentials.com. Whatsapp: +44 07710 660369',
     backToTop: '↑ Top',
     loading: 'Loading directory…',
     errorTitle: 'Could not load directory',
@@ -542,12 +537,12 @@ const I18N = {
     categories: 'categorías', category: 'categoría', in_: 'en',
     website: 'Web',
     footer1: 'Los listados son recomendaciones personales de la comunidad. No están verificados ni respaldados por la administración.',
-    footer2: 'Para sugerir un nuevo listado o actualización, contacte con el administrador de la página.',
+    footer2: 'Para sugerir un nuevo listado o actualización, contacte con el administrador de la página. Email: stevesmith@elvalleesentials.com. Whatsapp: +44 07710 660369',
     backToTop: '↑ Arriba',
     loading: 'Cargando directorio…',
     errorTitle: 'No se pudo cargar el directorio',
     errorHint: 'Comprueba tu conexión a internet e inténtalo de nuevo.',
-    suggestBtn: 'Sugerir un Listado',
+    suggestBtn: 'Sugerir un negocio',
     suggestNote: '¿Conoces un buen servicio local? Envíalo y lo revisaremos para el directorio.',
   }
 };
@@ -765,7 +760,6 @@ function renderDirectory() {
   // Show/hide resort & pills based on search
   document.getElementById('resortSection').style.display = (!q && !activeCat) ? '' : 'none';
   document.getElementById('pillsWrap').style.display = q ? 'none' : '';
-  document.getElementById('suggestBanner').style.display = q ? 'none' : '';
   
   // Build category→entries map
   const catMap = {};
@@ -855,7 +849,7 @@ function renderDirectory() {
    ══════════════════════════════════════════════════════════════════ */
 function setLang(l) {
   lang = l;
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === l));
+  document.querySelectorAll('.topbar-btn[data-lang]').forEach(b => b.classList.toggle('active', b.dataset.lang === l));
   render();
 }
 
