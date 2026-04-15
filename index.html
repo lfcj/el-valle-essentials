@@ -644,6 +644,21 @@ async function fetchData() {
     DATA.entries = parseCSV(entRes);
     DATA.resort = parseCSV(resortRes);
     
+    // Normalize headers: the Google Sheet might have slightly different column names
+    // e.g. "Name" instead of "category_id"
+    DATA.categories = DATA.categories.map(c => {
+      // If there's no category_id field, try common alternatives
+      if (!c.category_id) {
+        c.category_id = c.Name || c.name || c.ID || c.id || c.category || '';
+      }
+      return c;
+    });
+    DATA.entries = DATA.entries.map(e => {
+      // Normalize website field (might be "Website" with capital W)
+      if (!e.website && e.Website) e.website = e.Website;
+      return e;
+    });
+    
     // Debug: log to console so you can inspect what came back
     console.log('Loaded from Google Sheets:', {
       categories: DATA.categories.length,
